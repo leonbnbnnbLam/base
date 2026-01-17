@@ -7,9 +7,9 @@
  * "I was pressed!" and nothing.
  */
 
-pros::Controller controller(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup leftMotors({-4, -5, -6},pros::MotorGearset::blue); 
-pros::MotorGroup rightMotors({1, 2, 3}, pros::MotorGearset::blue); 
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::MotorGroup left_mg({-4, -5, -6},pros::MotorGearset::blue); 
+pros::MotorGroup right_mg({1, 2, 3}, pros::MotorGearset::blue); 
 pros::Imu imu(11);
 pros::Motor TopOutake(20);
 pros::Motor lowsetIntake(15);
@@ -114,10 +114,7 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
-void opcontrol() {
-	pros::Controller master(pros::E_CONTROLLER_MASTER);
-	pros::MotorGroup left_mg({1, -2, 3});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
-	pros::MotorGroup right_mg({-4, 5, -6});  // Creates a motor group with forwards port 5 and reversed ports 4 & 6
+void opcontrol() { // Creates a motor group with forwards port 5 and reversed ports 4 & 6
 
 
 	while (true) {
@@ -133,26 +130,26 @@ void opcontrol() {
 		pros::delay(20);                               // Run for 20 ms then update
 
 
-		if(controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+		if(master.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
             brake();
         }
         else {
-            if(controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
+            if(master.get_digital(pros::E_CONTROLLER_DIGITAL_R1)){
             intake_fwr();
             }
-            else if (controller.get_digital((pros::E_CONTROLLER_DIGITAL_R2))) {
+            else if (master.get_digital((pros::E_CONTROLLER_DIGITAL_R2))) {
             intake_back();
             }
-            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
             mid_roller_fwr();
             }
-            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             mid_roller_back();
             }
-            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_X)) {
             outake_fwr();
             }
-            else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+            else if (master.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
             outake_back();
             }
             else{
